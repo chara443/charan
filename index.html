@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather App — Animated Backgrounds</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Local CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="min-h-screen antialiased transition-colors duration-300">
+  <!-- VIDEO BACKGROUNDS: multiple <video> elements for different weather types -->
+  <div id="video-bg" class="fixed inset-0 -z-10 overflow-hidden">
+    <video id="bg-clear" class="bg-video hidden" loop muted playsinline></video>
+    <video id="bg-cloud" class="bg-video hidden" loop muted playsinline></video>
+    <video id="bg-rain" class="bg-video hidden" loop muted playsinline></video>
+    <video id="bg-snow" class="bg-video hidden" loop muted playsinline></video>
+    <video id="bg-thunder" class="bg-video hidden" loop muted playsinline></video>
+    <video id="bg-mist" class="bg-video hidden" loop muted playsinline></video>
+    <!-- fallback static image (optional) -->
+    <div id="bg-fallback" class="bg-fallback hidden"></div>
+    <!-- optional particle overlay canvas -->
+    <canvas id="particle-canvas" class="pointer-events-none absolute inset-0"></canvas>
+  </div>
+
+  <!-- App container -->
+  <main class="relative w-full max-w-4xl mx-auto p-6">
+    <header class="flex items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-semibold text-white drop-shadow">Weather Now</h1>
+        <p class="text-sm text-white/80 mt-1">Type a city, postal code, or coordinates and press Search</p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Dark/Light toggle -->
+        <button id="themeToggle" class="px-3 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition">
+          Toggle Theme
+        </button>
+        <!-- Units toggle (C / F) -->
+        <div class="inline-flex items-center bg-white/6 rounded-lg p-1">
+          <button id="unitC" class="px-3 py-1 text-sm text-white/90">°C</button>
+          <button id="unitF" class="px-3 py-1 text-sm text-white/60">°F</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="glass p-6 md:p-8 rounded-2xl shadow-xl">
+      <form id="searchForm" class="grid grid-cols-1 sm:grid-cols-[1fr,auto] gap-3">
+        <input id="locationInput" class="rounded-xl px-4 py-3 text-slate-900 placeholder-slate-500" placeholder="e.g. London, New York, 110001" value="London" />
+        <button id="searchBtn" type="submit" class="rounded-xl px-5 py-3 bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-medium shadow-md">Search</button>
+      </form>
+
+      <div id="status" class="mt-3 text-sm text-white/80"></div>
+
+      <div id="result" class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Current weather -->
+        <div id="card" class="glass p-5 rounded-2xl flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <div id="place" class="text-lg font-semibold text-white">Location</div>
+              <div id="time" class="text-xs text-white/80 mt-1">Local time</div>
+            </div>
+            <div class="flex items-center gap-3">
+              <img id="icon" src="" alt="" class="w-16 h-16" />
+              <div class="text-right">
+                <div id="temp" class="text-3xl font-bold text-white">--°C</div>
+                <div id="cond" class="text-sm text-white/80">Condition</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-sm text-white/80">
+            <div>Humidity: <span id="hum" class="font-medium text-white">--%</span></div>
+            <div>Wind: <span id="wind" class="font-medium text-white">-- kph</span></div>
+            <div>Feels: <span id="feels" class="font-medium text-white">--°</span></div>
+            <div>UV: <span id="uv" class="font-medium text-white">--</span></div>
+          </div>
+        </div>
+
+        <!-- Forecast (two-column area) -->
+        <div class="md:col-span-2 grid grid-cols-1 gap-4">
+          <div class="glass p-4 rounded-2xl">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm text-white/90 font-semibold">5-Day Forecast</h3>
+              <div id="forecastSummary" class="text-xs text-white/70">—</div>
+            </div>
+
+            <div id="forecast" class="mt-3 grid grid-cols-2 sm:grid-cols-5 gap-3"></div>
+          </div>
+
+          <div class="glass p-4 rounded-2xl flex items-center justify-between">
+            <div class="text-sm text-white/80">Air Quality</div>
+            <div class="text-right">
+              <div id="aqiValue" class="font-semibold text-white">--</div>
+              <div id="aqiMsg" class="text-xs text-white/70">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="mt-4 text-xs text-white/70">Data: WeatherAPI.com • Put video files in <code class="bg-white/6 px-1 rounded">assets/</code></p>
+    </section>
+  </main>
+
+  <!-- Local JS -->
+  <script src="script.js"></script>
+</body>
+</html>
